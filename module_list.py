@@ -1119,6 +1119,12 @@ ext_modules = [
               extra_compile_args=["-std=c99", "-D_XPG6"],
               depends = flint_depends),
 
+    Extension("sage.modular.modsym.padic_lseries.modular_symbol_map",
+              ["sage/modular/modsym/padic_lseries/modular_symbol_map.pyx"]),
+
+    Extension("sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast",
+              ["sage/modular/modsym/padic_lseries/padic_elliptic_lseries_fast.pyx"]),
+
     Extension('sage.modular.modsym.p1list',
               sources = ['sage/modular/modsym/p1list.pyx'],
               libraries = ['gmp']),

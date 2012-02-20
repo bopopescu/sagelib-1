@@ -6,7 +6,7 @@
 #
 #  PSAGE is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 2 of the License, or
+#  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 # 
 #  PSAGE is distributed in the hope that it will be useful,
@@ -19,6 +19,16 @@
 #
 #################################################################################
 
+cdef enum:
+    MAX_CONTFRAC = 100
+    MAX_DEG = 10000
 
-from newforms import (degrees,
-                      eigenvalue_fields)
+from sage.modular.modsym.p1list cimport P1List
+
+cdef class ModularSymbolMap:
+    cdef long d, N
+    cdef public long denom
+    cdef long* X  # coefficients of linear map from P^1 to Q^d.
+    cdef public object C
+    cdef P1List P1
+    cdef int evaluate(self, long v[MAX_DEG], long a, long b) except -1
