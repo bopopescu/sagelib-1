@@ -22,3 +22,5 @@
 
 from newforms import (degrees,
                       eigenvalue_fields)
+
+from padic_lseries import pAdicLseriesOrdinary

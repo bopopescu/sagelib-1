@@ -51,7 +51,7 @@ def modular_symbols_from_curve(C, N, num_factors=3):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.unfiled import modular_symbols_from_curve
+        sage: from sage.modular.modsym.padic_lseries.unfiled import modular_symbols_from_curve
 
         sage: R.<x> = ZZ[]
         sage: f = x^7+4*x^6+5*x^5+x^4-3*x^3-2*x^2+1

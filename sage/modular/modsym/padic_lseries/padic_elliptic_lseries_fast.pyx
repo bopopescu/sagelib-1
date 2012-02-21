@@ -82,7 +82,7 @@ cdef class pAdicLseries:
 
         EXAMPLES::
 
-            sage: from psage.modform.rational.padic_elliptic_lseries_fast import pAdicLseries
+            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: E = EllipticCurve('389a'); L = pAdicLseries(E, 7)
             sage: L.series()
             O(7) + O(7)*T + (5 + O(7))*T^2 + (3 + O(7))*T^3 + (6 + O(7))*T^4 + O(T^5)
@@ -122,7 +122,7 @@ cdef class pAdicLseries:
 
         Comparing the parallel and serial version::
 
-            sage: from psage.modform.rational.padic_elliptic_lseries_fast import pAdicLseries
+            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: L = pAdicLseries(EllipticCurve('389a'),997)
             sage: L2 = pAdicLseries(EllipticCurve('389a'),997,parallel=True)
             sage: L.series_modp() == L2.series_modp()
@@ -270,7 +270,7 @@ cdef class pAdicLseries:
         """
         EXAMPLES::
         
-            sage: import psage.modform.rational.padic_elliptic_lseries_fast as p; L = p.pAdicLseries(EllipticCurve('389a'),5)
+            sage: import sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast as p; L = p.pAdicLseries(EllipticCurve('389a'),5)
             sage: f = L._series(2, 3, ser_prec=6); f.change_ring(Integers(5^3))
             73*T^4 + 42*T^3 + 89*T^2 + 120*T
             sage: f = L._series(3, 4, ser_prec=6); f.change_ring(Integers(5^3))
@@ -365,7 +365,7 @@ cdef class pAdicLseries:
         """
         EXAMPLES::
 
-            sage: from psage.modform.rational.padic_elliptic_lseries_fast import pAdicLseries
+            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: E = EllipticCurve('389a'); L = pAdicLseries(E,5)
             sage: L.series()
             O(5) + O(5)*T + (4 + O(5))*T^2 + (2 + O(5))*T^3 + (3 + O(5))*T^4 + O(T^5)
@@ -406,7 +406,7 @@ cdef class pAdicLseries:
         """
         EXAMPLES::
 
-            sage: from psage.modform.rational.padic_elliptic_lseries_fast import pAdicLseries
+            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: E = EllipticCurve('389a')
             sage: L = pAdicLseries(E,5)
             sage: L.series_modp()
@@ -440,7 +440,7 @@ cdef class pAdicLseries:
         EXAMPLES::
 
             sage: E = EllipticCurve('10050s1')
-            sage: from psage.modform.rational.padic_elliptic_lseries_fast import pAdicLseries
+            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: L = pAdicLseries(E, 13)
             sage: sha, L, reg = L.sha_modp()
             sage: sha

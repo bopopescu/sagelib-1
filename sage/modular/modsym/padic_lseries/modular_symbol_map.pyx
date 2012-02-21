@@ -37,12 +37,12 @@ def test_contfrac_q(a, b):
     """
     EXAMPLES::
     
-        sage: import psage.modform.rational.modular_symbol_map
-        sage: psage.modform.rational.modular_symbol_map.test_contfrac_q(7, 97)
+        sage: import sage.modular.modsym.padic_lseries.modular_symbol_map
+        sage: sage.modular.modsym.padic_lseries.modular_symbol_map.test_contfrac_q(7, 97)
         [1, 13, 14, 97]
         sage: continued_fraction(7/97).convergents()
         [0, 1/13, 1/14, 7/97]
-        sage: psage.modform.rational.modular_symbol_map.test_contfrac_q(137, 93997)
+        sage: sage.modular.modsym.padic_lseries.modular_symbol_map.test_contfrac_q(137, 93997)
         [1, 686, 6175, 43911, 93997]
         sage: continued_fraction(137/93997).convergents()
         [0, 1/686, 9/6175, 64/43911, 137/93997]
@@ -94,7 +94,7 @@ cdef class ModularSymbolMap:
 
         We illustrate a few ways to construct the modular symbol map for 389a.
         
-            sage: from psage.modform.rational.modular_symbol_map import ModularSymbolMap
+            sage: from sage.modular.modsym.padic_lseries.modular_symbol_map import ModularSymbolMap
             sage: A = ModularSymbols(389,sign=1).cuspidal_subspace().new_subspace().decomposition()[0]
             sage: f = ModularSymbolMap(A)
             sage: f._eval1(-3,7)
@@ -225,7 +225,7 @@ cdef class ModularSymbolMap:
         """
         EXAMPLE::
 
-            sage: from psage.modform.rational.modular_symbol_map import ModularSymbolMap
+            sage: from sage.modular.modsym.padic_lseries.modular_symbol_map import ModularSymbolMap
             sage: A = ModularSymbols(188,sign=1).cuspidal_subspace().new_subspace().decomposition()[-1]
             sage: f = ModularSymbolMap(A)
             sage: f._eval1(-3,7)

@@ -37,17 +37,17 @@ def degrees(N, k, eps=None):
     EXAMPLES::
 
         sage: import psage
-        sage: psage.modform.rational.degrees(11,2)
+        sage: sage.modular.modsym.padic_lseries.degrees(11,2)
         [1]
-        sage: psage.modform.rational.degrees(37,2)
+        sage: sage.modular.modsym.padic_lseries.degrees(37,2)
         [1, 1]
-        sage: psage.modform.rational.degrees(43,2)
+        sage: sage.modular.modsym.padic_lseries.degrees(43,2)
         [1, 2]
-        sage: psage.modform.rational.degrees(DirichletGroup(13).0^2,2)
+        sage: sage.modular.modsym.padic_lseries.degrees(DirichletGroup(13).0^2,2)
         [1]
-        sage: psage.modform.rational.degrees(13,2,DirichletGroup(13).0^2)
+        sage: sage.modular.modsym.padic_lseries.degrees(13,2,DirichletGroup(13).0^2)
         [1]
-        sage: psage.modform.rational.degrees(13,2)
+        sage: sage.modular.modsym.padic_lseries.degrees(13,2)
         []
     """
     group = eps if eps else N
@@ -83,13 +83,13 @@ def eigenvalue_fields(N, k, eps=None):
     EXAMPLES::
     
         sage: import psage
-        sage: psage.modform.rational.eigenvalue_fields(11,2)
+        sage: sage.modular.modsym.padic_lseries.eigenvalue_fields(11,2)
         [Rational Field]
-        sage: psage.modform.rational.eigenvalue_fields(43,2)
+        sage: sage.modular.modsym.padic_lseries.eigenvalue_fields(43,2)
         [Rational Field, Number Field in alpha with defining polynomial x^2 - 2]
-        sage: psage.modform.rational.eigenvalue_fields(DirichletGroup(13).0^2,2)
+        sage: sage.modular.modsym.padic_lseries.eigenvalue_fields(DirichletGroup(13).0^2,2)
         [Cyclotomic Field of order 6 and degree 2]
-        sage: psage.modform.rational.eigenvalue_fields(13,2,DirichletGroup(13).0^2)
+        sage: sage.modular.modsym.padic_lseries.eigenvalue_fields(13,2,DirichletGroup(13).0^2)
         [Cyclotomic Field of order 6 and degree 2]
     """
     group = eps if eps else N
