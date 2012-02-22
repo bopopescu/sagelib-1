@@ -9,3 +9,5 @@ from heilbronn import HeilbronnCremona, HeilbronnMerel
 from p1list import P1List, lift_to_sl2z
 
 from p1list_nf import P1NFList, MSymbol
+
+import padic_lseries

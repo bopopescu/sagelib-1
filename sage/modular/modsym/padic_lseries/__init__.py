@@ -20,3 +20,5 @@ from newforms import (degrees,
 from padic_lseries import pAdicLseriesOrdinary
 
 from padic_elliptic_lseries_fast import pAdicLseries
+
+from modular_symbol_map import ModularSymbolMap

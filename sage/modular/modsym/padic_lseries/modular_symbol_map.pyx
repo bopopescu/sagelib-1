@@ -31,12 +31,12 @@ def test_contfrac_q(a, b):
     """
     EXAMPLES::
     
-        sage: import sage.modular.modsym.padic_lseries.modular_symbol_map
-        sage: sage.modular.modsym.padic_lseries.modular_symbol_map.test_contfrac_q(7, 97)
+        sage: import sage.modular.modsym.padic_lseries.modular_symbol_map as map
+        sage: map.test_contfrac_q(7, 97)
         [1, 13, 14, 97]
         sage: continued_fraction(7/97).convergents()
         [0, 1/13, 1/14, 7/97]
-        sage: sage.modular.modsym.padic_lseries.modular_symbol_map.test_contfrac_q(137, 93997)
+        sage: map.test_contfrac_q(137, 93997)
         [1, 686, 6175, 43911, 93997]
         sage: continued_fraction(137/93997).convergents()
         [0, 1/686, 9/6175, 64/43911, 137/93997]
@@ -80,6 +80,13 @@ cdef class ModularSymbolMap:
         self.X = NULL
 
     def __repr__(self):
+        """
+        EXAMPLES::
+
+            sage: A = ModularSymbols(23,sign=1).cuspidal_subspace()
+            sage: sage.modular.modsym.padic_lseries.ModularSymbolMap(A).__repr__()
+            'Modular symbols map for modular symbols factor of dimension 2 and level 23'        
+        """
         return "Modular symbols map for modular symbols factor of dimension %s and level %s"%(self.d, self.N)
         
     def __init__(self, A):
@@ -88,9 +95,8 @@ cdef class ModularSymbolMap:
 
         We illustrate a few ways to construct the modular symbol map for 389a.
         
-            sage: from sage.modular.modsym.padic_lseries.modular_symbol_map import ModularSymbolMap
-            sage: A = ModularSymbols(389,sign=1).cuspidal_subspace().new_subspace().decomposition()[0]
-            sage: f = ModularSymbolMap(A)
+            sage: A = ModularSymbols(389,sign=1).cuspidal_subspace().decomposition()[0]
+            sage: f = sage.modular.modsym.padic_lseries.ModularSymbolMap(A)
             sage: f._eval1(-3,7)
             [-2]
             sage: f.denom
@@ -209,22 +215,40 @@ cdef class ModularSymbolMap:
             sign *= -1
 
     def dimension(self):
+        """
+        Dimension of corresponding modular symbols space.
+
+        OUTPUT:
+
+        - int
+        
+        EXAMPLES::
+        
+            sage: A = ModularSymbols(389,sign=1).cuspidal_subspace()[4]
+            sage: sage.modular.modsym.padic_lseries.ModularSymbolMap(A).dimension()
+            20
+        """
         return self.d
         
-    def _eval0(self, a, b):
-        cdef long v[MAX_DEG]
-        self.evaluate(v, a, b)
-
-    def _eval1(self, a, b):
+    def __call__(self, a, b):
         """
+        Evaluate the modular symbols map at a/b.
+        
+        INPUT:
+        
+        - `a` -- integer
+        - `b` -- nonzero integer
+        
         EXAMPLE::
 
-            sage: from sage.modular.modsym.padic_lseries.modular_symbol_map import ModularSymbolMap
             sage: A = ModularSymbols(188,sign=1).cuspidal_subspace().new_subspace().decomposition()[-1]
-            sage: f = ModularSymbolMap(A)
-            sage: f._eval1(-3,7)
+            sage: f = sage.modular.modsym.padic_lseries.ModularSymbolMap(A)
+            sage: f(-3,7)
             [-3, 0]
-
+            sage: A = ModularSymbols(389,sign=1).cuspidal_subspace()[4]
+            sage: f = sage.modular.modsym.padic_lseries.ModularSymbolMap(A)
+            sage: f(-3,7)
+            [0, 0, 16, -32, 0, 0, 0, 16, -16, 0, 0, 0, 0, 0, -32, 32, 0, 16, -16, 0]
         """
         cdef long v[MAX_DEG]
         self.evaluate(v, a, b)
