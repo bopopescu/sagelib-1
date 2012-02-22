@@ -2127,16 +2127,23 @@ class ModularAbelianVariety_abstract(ParentWithBase):
         self.__lseries = lseries.Lseries_complex(self)
         return self.__lseries
 
-    def padic_lseries(self, p):
+    def padic_lseries(self, p, normalize='L_ratio'):
         """
         Return the `p`-adic `L`-series of this modular
         abelian variety.
+
+        INPUT:
+
+        - ``p`` - a prime 
+        - ``normalize`` - ``'L_ratio'`` (default), ``'period'`` or
+          ``'none'``; this is describes the way the modular
+          symbols are normalized
         
         EXAMPLES::
         
-            sage: A = J0(37)
+            sage: A = J0(37)[0]
             sage: A.padic_lseries(7)
-            7-adic L-series attached to Abelian variety J0(37) of dimension 2
+            7-adic L-series of Simple abelian subvariety 37a(1,37) of dimension 1 of J0(37)
         """
         p = int(p)
         try:
@@ -2145,7 +2152,14 @@ class ModularAbelianVariety_abstract(ParentWithBase):
             self.__lseries_padic = {}
         except KeyError:
             pass
-        self.__lseries_padic[p] = lseries.Lseries_padic(self, p)
+        import sage.modular.modsym.padic_lseries.padic_lseries as padic_lseries
+        if self.hecke_polynomial(p)[0] % p == 0:
+            # not ordinary
+            L = padic_lseries.pAdicLseries(self, p, normalize=normalize)
+        else:
+            # ordinary
+            L = padic_lseries.pAdicLseriesOrdinary(self, p, normalize=normalize)
+        self.__lseries_padic[p] = L
         return self.__lseries_padic[p]
 
     ###############################################################################

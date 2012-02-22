@@ -439,9 +439,8 @@ cdef class pAdicLseries:
 
         EXAMPLES::
 
-            sage: E = EllipticCurve('10050s1')
-            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
-            sage: L = pAdicLseries(E, 13)
+            sage: E = EllipticCurve([1, 0, 1, -126, 748])   # curve 10050s1
+            sage: L = sage.modular.modsym.padic_lseries.pAdicLseries(E, 13)
             sage: sha, L, reg = L.sha_modp()
             sage: sha
             1 + O(13)

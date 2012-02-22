@@ -24,3 +24,5 @@ from newforms import (degrees,
                       eigenvalue_fields)
 
 from padic_lseries import pAdicLseriesOrdinary
+
+from padic_elliptic_lseries_fast import pAdicLseries

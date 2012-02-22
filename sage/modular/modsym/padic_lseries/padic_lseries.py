@@ -32,7 +32,6 @@ AUTHORS:
 #                  http://www.gnu.org/licenses/
 ######################################################################
 
-	
 from sage.rings.integer_ring import   ZZ
 from sage.rings.rational_field import QQ
 from sage.rings.padics.factory import Qp, Zp
@@ -65,16 +64,16 @@ class pAdicLseries(SageObject):
 
     An ordinary example::
     
-    
     """
     def __init__(self, J, p, normalize='L_ratio'):
         r"""
         INPUT:
-            - ``J`` - modular abelian variety
-            - ``p`` - a prime of good reduction
-            - ``normalize`` - ``'L_ratio'`` (default), ``'period'`` or
-              ``'none'``; this is describes the way the modular
-              symbols are normalized
+
+        - ``J`` - modular abelian variety
+        - ``p`` - a prime of good reduction
+        - ``normalize`` - ``'L_ratio'`` (default), ``'period'`` or
+          ``'none'``; this is describes the way the modular
+          symbols are normalized
         """
         self._J = J
         self._level = J.level()
@@ -95,14 +94,14 @@ class pAdicLseries(SageObject):
         TESTS::
 
             sage: lp1 = J0(23)[0].padic_lseries(5)
-	    sage: lp2 = J0(23)[0].padic_lseries(7)
-	    sage: lp3 = J0(29)[0].padic_lseries(5)
-	    sage: lp1 == lp1
-	    True
-	    sage: lp1 == lp2
-	    False
-	    sage: lp1 == lp3
-	    False
+            sage: lp2 = J0(23)[0].padic_lseries(7)
+            sage: lp3 = J0(29)[0].padic_lseries(5)
+            sage: lp1 == lp1
+            True
+            sage: lp1 == lp2
+            False
+            sage: lp1 == lp3
+            False
         """
         c = cmp(type(self), type(other))
         if c: 
@@ -111,19 +110,19 @@ class pAdicLseries(SageObject):
 
     def modular_symbols_subspace(self):
         """
-	"""
+        """
         return self._modular_symbols_subspace
     
     def hecke_eigenvalue_field(self):
         """
-	The field of definition of the dual eigenform.
-	"""
+        The field of definition of the dual eigenform.
+        """
         return self._hecke_eigenvalue_field
 
     def psi(self):
-    	"""
+        """
         The embedding $\Q(\alpha) \into \Q_p(a)$ sending $\alpha \mapsto a$.
-	"""
+        """
         K_f = self._hecke_eigenvalue_field
         p = self._p
 #        kbar = K_f.residue_field(p)
@@ -142,11 +141,11 @@ class pAdicLseries(SageObject):
             a = F.gen()
             psi = self._psis = [K_f.hom([a])]
             return psi
-	
+        
     def modular_symbol(self,r):
         """
         Compute the modular symbol at the cusp $r$.
-	"""
+        """
         v = self._dual_eigenvector
 
         try:
@@ -286,8 +285,8 @@ class pAdicLseries(SageObject):
             return 3
 
     def sha(self):
-    	"""
-	"""
+        """
+        """
         list = [23, 29, 31, 35,39, 63,65, 87, 117, 125, 133, 135, 175, 189]
         A = self.abelian_variety()
         if A.dimension() != 2:
@@ -307,40 +306,40 @@ class pAdicLseries(SageObject):
             return 1
         elif lev == 63:
             return 1
-	elif self.label() == '65a(1,65)':
+        elif self.label() == '65a(1,65)':
             return 2
-	elif self.label() == '65b(1,65)':
+        elif self.label() == '65b(1,65)':
             return 2
-	elif lev == 87:
+        elif lev == 87:
             return 1
-	elif self.label() == '117a(1,117)':
+        elif self.label() == '117a(1,117)':
             return 1
-	elif self.label() == '117b(1,117)':
-	    return 1
-	elif self.label() == '125b(1,125)':
+        elif self.label() == '117b(1,117)':
+            return 1
+        elif self.label() == '125b(1,125)':
             return 4
-	elif self.label() == '133a(1,133)':
+        elif self.label() == '133a(1,133)':
             return 4
-	elif lev == 135:
+        elif lev == 135:
             return 1
-	elif lev == 175:
+        elif lev == 175:
             return 1
-	elif lev == 189:
+        elif lev == 189:
             return 1
 
     def rhs(self):
         """
-	"""
+        """
         list = [23, 29, 31, 35,39, 63,65, 87, 117, 125, 133, 135, 175, 189]
         lev = self.abelian_variety().level()
         if lev not in list:
             raise NotImplementedError
         else:
             try:
-   	        eps = (1-1/self.alpha()).norm()**2
+                eps = (1-1/self.alpha()).norm()**2
             except AttributeError:
                 eps = (1-1/self.alpha())**4
-	    return eps*(self.tamagawa_prod()*self.sha())/(self.torsion_order()**2)
+            return eps*(self.tamagawa_prod()*self.sha())/(self.torsion_order()**2)
 
         
 
@@ -353,9 +352,9 @@ class pAdicLseries(SageObject):
         
         EXAMPLES::
         
-	    sage: L = J0(23)[0].padic_lseries(5)
+            sage: L = J0(23)[0].padic_lseries(5)
             sage: L.abelian_variety()
-	    Simple abelian variety J0(23) of dimension 2
+            Simple abelian variety J0(23) of dimension 2
         """
         return self._J
 
@@ -365,12 +364,12 @@ class pAdicLseries(SageObject):
         
         EXAMPLES::
         
-	    sage: L = J0(23)[0].padic_lseries(5)
-	    sage: L.prime()
-	    5
+            sage: L = J0(23)[0].padic_lseries(5)
+            sage: L.prime()
+            5
         """
         return self._p
-		
+                
     def _repr_(self):
         r"""
         Return print representation.
@@ -381,37 +380,30 @@ class pAdicLseries(SageObject):
         if not self._normalize == 'L_ratio':
             s += ' (not normalized)'
         return s
-   	
+        
     def ap(self):
         """
-	Return the Hecke eigenvalue $a_p$.
+        Return the Hecke eigenvalue $a_p$.
 
         EXAMPLES::
 
             sage: J = J0(23)[0]
-            sage: [(p, J.padic_lseries(p)) for p in prime_range(5,30)]
-	    (5, 2*alpha)
-	    (7, 2*alpha + 2)
-	    (11, -2*alpha - 4)
-	    (13, 3)
-	    (17, -2*alpha + 2)
-	    (19, -2)
-	    (23, 1)
-	    (29, -3)
-	"""
+            sage: [(p, J.padic_lseries(p).ap()) for p in prime_range(5,30)]
+            [(5, 2*alpha), (7, 2*alpha + 2), (11, -2*alpha - 4), (13, 3), (17, -2*alpha + 2), (19, -2), (23, 1), (29, -3)]
+        """
         try:
             A = self._modular_symbols_subspace
         except AttributeError:
             A = self._modular_symbols_subspace = self.modular_symbols_subspace()
         a_p = self._ap = A.eigenvalue(self._p)
-	return a_p 
+        return a_p 
  
     def is_ordinary(self):
-    	"""
-	Check if $p$ is an ordinary prime.
-	"""
+        """
+        Check if $p$ is an ordinary prime.
+        """
         try:
-    	    K_f = self._hecke_eigenvalue_field
+            K_f = self._hecke_eigenvalue_field
         except AttributeError:
             K_f = self._hecke_eigenvalue_field = self.hecke_eigenvalue_field()
         try:
@@ -428,7 +420,7 @@ class pAdicLseries(SageObject):
     def measure(self,a,n,prec,quadratic_twist=+1,user_alpha=[],outside_call=False):
         """
         outside_call: if using this from outside the series computation
-	"""
+        """
         if quadratic_twist > 0:
             s = +1
         else:
@@ -502,7 +494,7 @@ class pAdicLseries(SageObject):
 
         K_f = self.hecke_eigenvalue_field()
         if len(psis) == 1:
-   	    F = Q.extension(K_f.defining_polynomial(),names='a')
+            F = Q.extension(K_f.defining_polynomial(),names='a')
             a = F.gen()
             G = K_f.embeddings(K_f)
             if G[0](K_f.gen()) == K_f.gen():
@@ -514,9 +506,9 @@ class pAdicLseries(SageObject):
             a_p_conj = conj_map(a_p)
             R = F['x']
             x = R.gen()
-	    psi = psis[0]
+            psi = psis[0]
             a_p_padic = psi(a_p)
-	    a_p_conj_padic = psi(a_p_conj)
+            a_p_conj_padic = psi(a_p_conj)
             f = x**2 - (a_p_padic)*x + p
             fconj = x**2 - (a_p_conj_padic)*x + p
             norm_f = f*fconj
@@ -695,13 +687,11 @@ class pAdicLseriesOrdinary(pAdicLseries):
     """
     EXAMPLE:
 
-        sage: from sage.modular.modsym.padic_lseries import pAdicLseriesOrdinary
-        sage: A = J0(188)[-2]
-        sage: L = pAdicLseriesOrdinary(A, 7)
+        sage: L = J0(188)[-2].padic_lseries(7)
         sage: L.series()
-        O(7^20) + ((2*a + 4) + (6*a + 2)*7 + 6*7^2 + 4*a*7^3 + (4*a + 5)*7^4 + (4*a + 5)*7^5 + (6*a + 3)*7^6 + (2*a + 1)*7^7 + (5*a + 2)*7^8 + 5*7^9 + (2*a + 2)*7^10 + (5*a + 4)*7^11 + 3*a*7^12 + (5*a + 4)*7^13 + 5*a*7^14 + (3*a + 6)*7^15 + (5*a + 6)*7^16 + (6*a + 4)*7^17 + 5*a*7^18 + (3*a + 5)*7^19 + O(7^20))*T + ((5*a + 3) + (a + 6)*7 + (2*a + 1)*7^2 + (3*a + 2)*7^3 + (4*a + 2)*7^4 + 4*a*7^5 + (2*a + 6)*7^6 + 3*7^7 + (3*a + 5)*7^8 + (5*a + 2)*7^9 + (a + 3)*7^10 + 6*a*7^11 + (5*a + 5)*7^12 + (6*a + 6)*7^13 + (3*a + 4)*7^14 + (2*a + 4)*7^15 + (3*a + 6)*7^16 + (6*a + 1)*7^17 + 5*7^18 + (6*a + 5)*7^19 + O(7^20))*T^2 + ((3*a + 6) + (6*a + 6)*7 + 5*7^2 + 6*a*7^3 + (a + 4)*7^4 + (3*a + 2)*7^5 + 3*a*7^6 + (4*a + 6)*7^7 + (5*a + 2)*7^8 + 6*a*7^9 + (3*a + 1)*7^10 + (5*a + 3)*7^11 + (a + 1)*7^12 + (a + 4)*7^13 + (6*a + 2)*7^14 + (a + 2)*7^15 + (3*a + 1)*7^17 + (2*a + 5)*7^18 + (a + 3)*7^19 + O(7^20))*T^3 + ((3*a + 6) + (4*a + 3)*7 + (2*a + 3)*7^2 + (2*a + 2)*7^3 + 5*a*7^4 + 3*a*7^5 + (2*a + 5)*7^6 + (6*a + 1)*7^7 + (a + 2)*7^8 + (a + 1)*7^9 + (4*a + 5)*7^10 + 5*a*7^11 + (3*a + 4)*7^12 + (5*a + 6)*7^13 + (a + 5)*7^14 + 5*7^15 + 4*a*7^16 + (a + 3)*7^17 + (6*a + 2)*7^18 + (2*a + 3)*7^19 + O(7^20))*T^4 + O(T^5)
+        O(7^20) + ((4*a + 4) + (5*a + 2)*7 + (a + 6)*7^2 + a*7^3 + (2*a + 5)*7^4 + (2*a + 5)*7^5 + (6*a + 3)*7^6 + (5*a + 1)*7^7 + (3*a + 2)*7^8 + (a + 5)*7^9 + (4*a + 2)*7^10 + (3*a + 4)*7^11 + (4*a + 4)*7^13 + 4*a*7^14 + 6*7^15 + (4*a + 6)*7^16 + (6*a + 4)*7^17 + 4*a*7^18 + 5*7^19 + O(7^20))*T + ((3*a + 3) + (3*a + 6)*7 + (4*a + 1)*7^2 + (6*a + 2)*7^3 + (a + 2)*7^4 + 2*a*7^5 + (5*a + 6)*7^6 + 3*7^7 + (6*a + 5)*7^8 + (3*a + 2)*7^9 + (3*a + 3)*7^10 + 5*a*7^11 + (4*a + 5)*7^12 + (6*a + 6)*7^13 + 4*7^14 + (5*a + 4)*7^15 + (6*a + 6)*7^16 + (5*a + 1)*7^17 + (a + 5)*7^18 + (5*a + 5)*7^19 + O(7^20))*T^2 + ((6*a + 6) + (5*a + 6)*7 + (a + 5)*7^2 + 5*a*7^3 + (3*a + 4)*7^4 + (6*a + 2)*7^5 + 6*a*7^6 + (a + 6)*7^7 + (4*a + 2)*7^8 + 6*a*7^9 + 7^10 + (4*a + 3)*7^11 + (3*a + 1)*7^12 + (2*a + 4)*7^13 + (5*a + 2)*7^14 + (3*a + 2)*7^15 + (6*a + 1)*7^17 + (4*a + 5)*7^18 + (2*a + 3)*7^19 + O(7^20))*T^3 + ((6*a + 6) + (a + 3)*7 + (5*a + 3)*7^2 + (4*a + 2)*7^3 + 3*a*7^4 + (5*a + 5)*7^6 + (5*a + 1)*7^7 + (3*a + 2)*7^8 + (2*a + 1)*7^9 + (a + 5)*7^10 + 4*a*7^11 + 4*7^12 + (4*a + 6)*7^13 + (3*a + 5)*7^14 + 5*7^15 + a*7^16 + (3*a + 3)*7^17 + (5*a + 2)*7^18 + (5*a + 3)*7^19 + O(7^20))*T^4 + O(T^5)
 
-        sage: L = pAdicLseriesOrdinary(A,19)
+        sage: L = J0(188)[-2].padic_lseries(19)
         sage: f = L.series(n=3)
         sage: f[2]
         8 + 13*19 + 11*19^2 + 12*19^3 + 16*19^4 + 16*19^5 + 4*19^6 + 19^7 + 3*19^8 + 6*19^9 + 3*19^10 + 15*19^11 + 9*19^12 + 15*19^13 + 5*19^14 + 8*19^15 + 16*19^16 + 6*19^17 + 11*19^18 + 6*19^19 + O(19^20)
@@ -709,7 +699,7 @@ class pAdicLseriesOrdinary(pAdicLseries):
     """
     def measure_experimental(self,a,n,prec,quadratic_twist=+1,alpha=[]):
         """
-	"""
+        """
         if quadratic_twist > 0:
             s = +1
         else:
@@ -741,7 +731,9 @@ class pAdicLseriesOrdinary(pAdicLseries):
             else:
                 mu = chip**n * sum([kronecker_symbol(D,u) *(z * f(a/(p*w)+ZZ(u)/D) - chip *(z/alpha)* f(a/w+ZZ(u)/D)) for u in range(1,abs(D))])
             return s*mu
-            
+
+    def is_ordinary(self):
+        return True
 
     def series(self, n=2, quadratic_twist=+1, prec=5):
         r"""
@@ -769,17 +761,15 @@ class pAdicLseriesOrdinary(pAdicLseries):
 
         EXAMPLES:
 
-	    sage: J = J0(188)[0]
-	    sage: p = 7
-	    sage: L = J.padic_lseries(p)
-	    sage: L.is_ordinary()
-	    True
-	    sage: f = L.series(2)
-	    sage: f[0]
-	    O(7^20)
-	    sage: f[1].norm()
-	    3 + 4*7 + 3*7^2 + 6*7^3 + 5*7^4 + 5*7^5 + 6*7^6 + 4*7^7 + 5*7^8 + 7^10 + 5*7^11 + 4*7^13 + 4*7^14 + 5*7^15 + 2*7^16 + 5*7^17 + 7^18 + 7^19 + O(7^20)
-
+            sage: A = J0(188).new_subvariety()[0]
+            sage: L = A.padic_lseries(7)
+            sage: L.is_ordinary()
+            True
+            sage: f = L.series(2)
+            sage: f[0]
+            O(7^20)
+            sage: f[1].norm()
+            3 + 4*7 + 3*7^2 + 6*7^3 + 5*7^4 + 5*7^5 + 6*7^6 + 4*7^7 + 5*7^8 + 7^10 + 5*7^11 + 4*7^13 + 4*7^14 + 5*7^15 + 2*7^16 + 5*7^17 + 7^18 + 7^19 + O(7^20)
         """
         n = ZZ(n)
         if n < 1:
