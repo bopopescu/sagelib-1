@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+
+################################################################################
+#       Copyright (C) 2010-2012 William Stein <wstein@gmail.com>
+#
+#  Distributed under the terms of the GNU General Public License (GPL)
+#
+#    This code is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#    General Public License for more details.
+#
+#  The full text of the GPL is available at:
+#
+#                  http://www.gnu.org/licenses/
+################################################################################
+
 r"""
 p-adic L-series of modular Jacobians with ordinary reduction at p.
 
@@ -17,20 +33,6 @@ AUTHORS:
 
 """
 
-######################################################################
-#       Copyright (C) 2010 William Stein <wstein@gmail.com>
-#
-#  Distributed under the terms of the GNU General Public License (GPL)
-#
-#    This code is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#    General Public License for more details.
-#
-#  The full text of the GPL is available at:
-#
-#                  http://www.gnu.org/licenses/
-######################################################################
 
 from sage.rings.integer_ring import   ZZ
 from sage.rings.rational_field import QQ
