@@ -77,6 +77,13 @@ cdef long contfrac_q(long qi[MAX_CONTFRAC], long a, long b) except -1:
 
 cdef class ModularSymbolMap:
     def __cinit__(self):
+        """
+        EXAMPLES::
+            
+            sage: M = ModularSymbols(11,sign=1).cuspidal_subspace()
+            sage: type(sage.modular.modsym.padic_lseries.ModularSymbolMap(M))  # indirect doctest
+            <type 'sage.modular.modsym.padic_lseries.modular_symbol_map.ModularSymbolMap'>            
+        """
         self.X = NULL
 
     def __repr__(self):
@@ -140,6 +147,37 @@ cdef class ModularSymbolMap:
             n += 1
 
     def _init_using_ell_modular_symbol(self, f):
+        """
+        Returns matrix whose rows are the images of the Manin symbols
+        corresponding to the elements of P^1 under the modular symbol
+        map.  This is an internal function to initialize the fast
+        internal data structures using the slow generic modular
+        symbols space A.
+
+        INPUT:
+
+        - `f` -- elliptic curve modular symbol map
+
+        OUTPUT:
+
+        - matrix
+
+        EXAMPLES::
+
+            sage: E = EllipticCurve('11a1')
+            sage: r = E.modular_symbol(1)
+            sage: f = sage.modular.modsym.padic_lseries.ModularSymbolMap(r)
+            sage: f._init_using_ell_modular_symbol(r)
+            [-1/5]
+            [ 1/5]
+            [   0]
+            ...
+            [ 1/2]
+            [   1]
+            [   0]
+            sage: f._init_using_ell_modular_symbol(r) == f.C    # f.C was computed when f was constructed
+            True        
+        """
         # Input f is an elliptic curve modular symbol map
         assert f.sign() != 0
         self.d = 1  # the dimension
@@ -164,6 +202,37 @@ cdef class ModularSymbolMap:
         return C
 
     def _init_using_modsym_space(self, A):
+        """
+        Returns matrix whose rows are the images of the Manin symbols
+        corresponding to the elements of P^1 under the modular symbol
+        map.  This is an internal function to initialize the fast
+        internal data structures using the slow generic modular
+        symbols space A.
+
+        INPUT:
+
+        - `A` -- modular symbols space with sign 1 or -1
+
+        OUTPUT:
+
+        - matrix
+
+        EXAMPLES::
+
+            sage: M = ModularSymbols(11,sign=1).cuspidal_subspace()
+            sage: f = sage.modular.modsym.padic_lseries.ModularSymbolMap(M)
+            sage: f(2,3)
+            [-5]
+            sage: f._init_using_modsym_space(M)
+            [  -1]
+            [   1]
+            ...
+            [ 5/2]
+            [   5]
+            [   0]
+            sage: f._init_using_modsym_space(M) == f.C    # f.C was computed when f was constructed
+            True        
+        """
         # Very slow generic setup code.  This is "O(1)" in that we
         # care mainly about evaluation time being fast, at least in
         # this code.
