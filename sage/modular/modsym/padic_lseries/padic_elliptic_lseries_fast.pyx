@@ -32,6 +32,14 @@ cdef long mulmod(long a, long b, long n):
 
     The point of this function is that it is safe even if a*b would
     overflow a long, since it uses GMP.
+
+    INPUT:
+
+    - `a`, `b`, `n` -- long
+
+    OUTPUT:
+
+    - long
     """
     global aa, bb
     mpz_set_si(aa.value, a)
@@ -39,7 +47,33 @@ cdef long mulmod(long a, long b, long n):
     mpz_mul(cc.value, aa.value, bb.value)
     return mpz_fdiv_ui(cc.value, n)
 
+def test_mulmod(a, b, n):
+    """
+    Return (a*b)%n, which is >= 0.  Used for testing cdef'd function
+    mulmod.
+    
+    INPUT:
+
+    - `a`, `b`, `n` -- long
+
+    OUTPUT:
+
+    - long
+
+    EXAMPLES::
+
+        sage: t = sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast.test_mulmod
+        sage: from random import randint; import random; random.seed(0)
+        sage: v = [(randint(-2^63, 2^63), randint(-2^63,2^63), randint(1,2^63)) for _ in range(10^4)]
+        sage: all(t(a,b,n)==(a*b)%n for a,b,n in v)
+        True        
+    """
+    return mulmod(a,b,n)
+
 cdef class pAdicLseries:
+    """
+    The p-adic L-series of an elliptic curve.
+    """
     cdef bint parallel
     cdef public object E
     cdef public long p, prec
@@ -52,6 +86,12 @@ cdef class pAdicLseries:
     cdef public ModularSymbolMap modsym
 
     def __cinit__(self):
+        """
+        EXAMPLES::
+
+        
+        
+        """
         self.teich = NULL
         self.teich_mulmod = NULL
 
@@ -75,8 +115,10 @@ cdef class pAdicLseries:
 
         EXAMPLES::
 
-            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
-            sage: E = EllipticCurve('389a'); L = pAdicLseries(E, 7)
+            sage: from sage.modular.modsym.padic_lseries import pAdicLseries
+
+            sage: E = EllipticCurve('389a')
+            sage: L = pAdicLseries(E, 7)
             sage: L.series()
             O(7) + O(7)*T + (5 + O(7))*T^2 + (3 + O(7))*T^3 + (6 + O(7))*T^4 + O(T^5)
             sage: L.series(n=3)
@@ -115,15 +157,10 @@ cdef class pAdicLseries:
 
         Comparing the parallel and serial version::
 
-            sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
             sage: L = pAdicLseries(EllipticCurve('389a'),997)
             sage: L2 = pAdicLseries(EllipticCurve('389a'),997,parallel=True)
             sage: L.series_modp() == L2.series_modp()
             True        
-
-        If you time the left and right above separately, and have a
-        multicore machine, you should see that the right is much
-        faster than the left.
         """
         self.parallel = parallel
         self.E = E
@@ -207,12 +244,47 @@ cdef class pAdicLseries:
         self.normalization_mulmod = ZZ(self.E.real_components()).inverse_mod(self.p_pow[self.prec])
 
     def __repr__(self):
+        """
+        EXAMPLES::
+
+            sage: sage.modular.modsym.padic_lseries.pAdicLseries(EllipticCurve('37a'), 5).__repr__()
+            '5-adic L-series of Elliptic Curve defined by y^2 + y = x^3 - x over Rational Field'        
+        """
         return "%s-adic L-series of %s"%(self.p, self.E)
 
     def alpha(self):
+        """
+        Approximation as a C long to the p-adic choice alpha of unit
+        root of `x^2 - a_p x + p`.
+        
+        EXAMPLES::
+
+            sage: E = EllipticCurve('37a1')
+            sage: L = sage.modular.modsym.padic_lseries.pAdicLseries(E, 5)
+            sage: L.alpha()
+            5881564383791575988
+            sage: R.<x> = Zp(5)[]
+            sage: (x^2 - E.ap(5)*x + 5).roots()
+            [(3 + 2*5 + 4*5^2 + 2*5^3 + 5^4 + 4*5^5 + 2*5^7 + 5^8 + 5^9 + 5^12 + 3*5^13 + 3*5^14 + 5^15 + 4*5^17 + 5^18 + 3*5^19 + O(5^20), 1), (2*5 + 2*5^3 + 3*5^4 + 4*5^6 + 2*5^7 + 3*5^8 + 3*5^9 + 4*5^10 + 4*5^11 + 3*5^12 + 5^13 + 5^14 + 3*5^15 + 4*5^16 + 3*5^18 + 5^19 + O(5^20), 1)]
+            sage: R(L.alpha())
+            (3 + 2*5 + 4*5^2 + 2*5^3 + 5^4 + 4*5^5 + 2*5^7 + 5^8 + 5^9 + 5^12 + 3*5^13 + 3*5^14 + 5^15 + 4*5^17 + 5^18 + 3*5^19 + O(5^20))        
+        """
         return self._alpha
         
     cpdef long modular_symbol(self, long a, long b):
+        """
+        Return value of the modular symbol map on a/b, as a long (so
+        this map is normalized to have no denominator).
+        
+        EXAMPLES::
+
+            sage: E = EllipticCurve('37a1')
+            sage: L = sage.modular.modsym.padic_lseries.pAdicLseries(E, 5)
+            sage: L.modular_symbol(1, 5)
+            1
+            sage: E.modular_symbol()(1/5)         # double check
+            1
+        """
         cdef long v[1]
         self.modsym.evaluate(v, a, b)
         return v[0]
@@ -224,6 +296,27 @@ cdef class pAdicLseries:
         INPUT:
         - a -- long
         - n -- int (very small)
+
+        OUTPUT:
+        - long -- approximation to p-adic integer
+        
+        EXAMPLES::
+
+            sage: E = EllipticCurve('37a1')
+            sage: L = sage.modular.modsym.padic_lseries.pAdicLseries(E, 5)
+            sage: L.measure(-2, 4)
+            -772935773
+
+        As a consistency check, we recompute the above using a different
+        implementation and get something that is the same modulo 5^14::
+        
+            sage: L0 = E.padic_lseries(5)
+            sage: type(L0)
+            <class 'sage.schemes.elliptic_curves.padic_lseries.pAdicLseriesOrdinary'>            
+            sage: L.measure(-2, 4) - L0.measure(-2, 4,20)
+            2*5^14 + 4*5^16 + 5^17 + 5^18 + 4*5^19 + O(5^20)        
+            sage: 5^14 > 2^32
+            True
         """
         if n+1 > self.prec:  # for safety
             raise ValueError, "n too large to compute measure"
@@ -242,6 +335,21 @@ cdef class pAdicLseries:
         - a -- long
         - n -- int (very small)
         - pp -- long (modulus, a power of p).
+
+        EXAMPLES::
+
+            sage: E = EllipticCurve('37a1')
+            sage: L = sage.modular.modsym.padic_lseries.pAdicLseries(E, 5)
+            sage: L.measure_mulmod(-2, 4, 5^20)
+            13872518079852
+
+        Consistency check with different code::
+        
+            sage: L0 = E.padic_lseries(5)
+            sage: type(L0)
+            <class 'sage.schemes.elliptic_curves.padic_lseries.pAdicLseriesOrdinary'>            
+            sage: L.measure_mulmod(-2, 4, 5^20) - L0.measure(-2, 4,20)
+            O(5^20)        
         """
         if n+1 > self.prec:  # for safety
             raise ValueError, "n too large to compute measure"
@@ -261,6 +369,20 @@ cdef class pAdicLseries:
     def _series(self, int n, prec, ser_prec=5, bint verb=0, bint force_mulmod=False,
                  long start=-1, long stop=-1):
         """
+        INPUT:
+
+        - `n` --
+        - ``prec`` --
+        - ``ser_prec`` --
+        - ``verb`` --
+        - ``force_mulmod`` --
+        - ``start`` --
+        - ``stop`` --
+
+        OUTPUT:
+
+        - ?
+        
         EXAMPLES::
         
             sage: import sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast as p; L = p.pAdicLseries(EllipticCurve('389a'),5)
@@ -340,9 +462,29 @@ cdef class pAdicLseries:
 
     def _series_parallel(self, int n, prec, ser_prec=5, bint verb=0, bint force_mulmod=False,
                          ncpus=None):
+        """
+        INPUT: Same as for _series, except for this option:
+
+        - ``ncpus`` -- positive integer or None
+
+        OUTPUT:
+
+        ?
+          
+        EXAMPLES::
+        
+        """
         return series_parallel(self, n, prec, ser_prec, verb, force_mulmod, ncpus)
 
     def _prec_bounds(self, n, ser_prec):
+        """
+        INPUT:
+
+        OUTPUT:
+        
+        EXAMPLES::
+        
+        """
         pn  = Integer(self.p_pow[n-1])
         enj = infinity
         res = [enj]
@@ -356,6 +498,10 @@ cdef class pAdicLseries:
     def series(self, int n=2, prec=None, ser_prec=5, int check=True, bint verb=False,
                parallel=None):
         """
+        INPUT:
+
+        OUTPUT:
+        
         EXAMPLES::
 
             sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
@@ -397,6 +543,10 @@ cdef class pAdicLseries:
         
     def series_modp(self, int n=2, ser_prec=5, int check=True):
         """
+        INPUT:
+
+        OUTPUT:
+        
         EXAMPLES::
 
             sage: from sage.modular.modsym.padic_lseries.padic_elliptic_lseries_fast import pAdicLseries
@@ -413,6 +563,14 @@ cdef class pAdicLseries:
         return L.change_ring(Integers(self.p))
 
     def series_to_enough_prec(self, bint verb=0):
+        """
+        INPUT:
+
+        OUTPUT:
+        
+        EXAMPLES::
+        
+        """
         r = self.E.rank()
         n = 2
         while True:
@@ -430,6 +588,10 @@ cdef class pAdicLseries:
         Return the p-adic conjectural order of Sha mod p using p-adic
         BSD, along with the p-adic L-series and p-adic regulator.
 
+        INPUT:
+
+        OUTPUT:
+        
         EXAMPLES::
 
             sage: E = EllipticCurve([1, 0, 1, -126, 748])   # curve 10050s1
@@ -457,6 +619,14 @@ cdef class pAdicLseries:
         return sha, L, reg
         
 def series_parallel(L, n, prec, ser_prec=5, verb=False, force_mulmod=False, ncpus=None):
+    """
+    INPUT:
+
+    OUTPUT:
+
+    EXAMPLES::
+
+    """
     # Use @parallel to do this computation by dividing it up into
     # p separate tasks, doing those in separate processes,
     # combining the results, etc.
