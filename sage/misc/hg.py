@@ -176,7 +176,7 @@ class HG:
           printing)
         
         - ``pull_url`` - a default URL to pull or record sends against
-          (e.g., this could be a master repository on
+          (e.g., this could be a main repository on
           modular.math.washington.edu)
         
         - ``push_url`` - a default URL to push or record outgoing
@@ -1020,7 +1020,7 @@ class HG:
 
     def pull_url(self):
         """
-        Return the default 'master url' for this repository.
+        Return the default 'main url' for this repository.
 
         EXAMPLES::
 

@@ -31,8 +31,8 @@ templates_path = [os.path.join(SAGE_DOC, 'common/templates'), 'templates']
 # The suffix of source filenames.
 source_suffix = '.rst'
 
-# The master toctree document.
-master_doc = 'index'
+# The main toctree document.
+main_doc = 'index'
 
 # General information about the project.
 project = u""
